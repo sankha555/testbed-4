@@ -1,0 +1,8 @@
+from Compiler.types import *
+from Compiler.library import *
+
+indices = sint.Array(60000)
+indices.assign(regint.inc(60000))
+indices.shuffle()
+
+print_ln("shuffled = %s", indices.get_vector(0, 10).reveal())

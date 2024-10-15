@@ -1,0 +1,49 @@
+
+import math
+import re
+import util
+from Compiler.types import *
+
+program.options_from_args()
+sfix.round_nearest = True
+sfix.set_precision_from_args(program, adapt_ring=True)
+
+class Tensor(MultiArray):
+    def __init__(self, *args, **kwargs):
+        kwargs['alloc'] = False
+        super(Tensor, self).__init__(*args, **kwargs)
+
+    def input_from(self, *args, **kwargs):
+        self.alloc()
+        super(Tensor, self).input_from(*args, **kwargs)
+
+    def __getitem__(self, *args):
+        self.alloc()
+        return super(Tensor, self).__getitem__(*args)
+
+    def assign_all(self, *args):
+        self.alloc()
+        return super(Tensor, self).assign_all(*args)
+
+    def assign_vector(self, *args, **kwargs):
+        self.alloc()
+        return super(Tensor, self).assign_vector(*args, **kwargs)
+
+    def assign_vector_by_indices(self, *args):
+        self.alloc()
+        return super(Tensor, self).assign_vector_by_indices(*args)
+
+W = sfix.Matrix(10, 784)
+X = sfix.Matrix(1, 784)
+Y = sfix.Matrix(1, 10)
+Y.alloc()
+
+X.input_from(0)
+W.input_from(0)
+
+Y = X.direct_mul_trans(W)
+
+print_ln("W = %s", W.get_vector().reveal())
+print_ln("X = %s", X.get_vector().reveal())
+print_ln("Y = %s", Y.get_vector().reveal())
+
